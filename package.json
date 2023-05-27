@@ -1,10 +1,13 @@
 {
-  "devDependencies": {
-    "typescript": "^5.0.4"
-  },
   "name": "sandwich-bot",
   "description": "Proof of concept - Sandwich attack",
+  "homepage": "https://github.com/0xRLA/sandwich-bot#readme",
   "version": "1.0.0",
+  "author": "0xRLA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0xRLA/sandwich-bot/issues"
+  },
   "main": "build/index.js",
   "scripts": {
     "start": "tsc && node build/index.js",
@@ -14,10 +17,12 @@
     "type": "git",
     "url": "git+https://github.com/0xRLA/sandwich-bot.git"
   },
-  "author": "0xRLA",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/0xRLA/sandwich-bot/issues"
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.1"
   },
-  "homepage": "https://github.com/0xRLA/sandwich-bot#readme"
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "typescript": "^5.0.4"
+  }
 }

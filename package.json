@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  },
+  "name": "sandwich-bot",
+  "description": "Proof of concept - Sandwich attack",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "tsc && node build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xRLA/sandwich-bot.git"
+  },
+  "author": "0xRLA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0xRLA/sandwich-bot/issues"
+  },
+  "homepage": "https://github.com/0xRLA/sandwich-bot#readme"
+}

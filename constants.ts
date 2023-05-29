@@ -2,6 +2,10 @@ require("dotenv").config();
 
 const isMainnet = process.argv[2] == "mainnet";
 
+const privateKey = isMainnet
+  ? process.env.MAINNET_WALLET_PRIVATE_KEY
+  : process.env.TESTNET_WALLET_PRIVATE_KEY;
+
 const httpProviderUrl = isMainnet
   ? process.env.MAINNET_NODE_URL
   : process.env.TESTNET_NODE_URL;
@@ -18,10 +22,21 @@ const wETHAddress = isMainnet
   ? "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
   : "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6";
 
+const uniswapV2FactoryAddress = isMainnet
+  ? "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"
+  : "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
+
+const gasBribe = process.env.GAS_BRIBE_IN_GWEI;
+const buyAmount = process.env.BUY_AMOUNT_IN_WEI;
+
 export {
   isMainnet,
+  privateKey,
   wssProviderUrl,
   httpProviderUrl,
   uniswapUniversalRouterV3Address,
   wETHAddress,
+  uniswapV2FactoryAddress,
+  gasBribe,
+  buyAmount,
 };

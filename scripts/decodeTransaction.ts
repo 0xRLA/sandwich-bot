@@ -1,13 +1,16 @@
 import { Transaction, ethers } from "ethers";
 import UniswapUniversalRouterV3Abi from "../abi/UniswapUniversalRouterV3.json";
 import { uniswapUniversalRouterV3Address, wETHAddress } from "../constants";
-import { decodeSwap } from "./decodeSwap";
+import { decodeSwap } from "./utils";
+import DecodedTransactionProps from "../types/DecodedTransactionProps";
 
 const uniswapV3Interface = new ethers.utils.Interface(
   UniswapUniversalRouterV3Abi
 );
 
-const decodeTransaction = async (transaction: Transaction) => {
+const decodeTransaction = async (
+  transaction: Transaction
+): Promise<DecodedTransactionProps | boolean> => {
   if (!transaction || !transaction.to) return false;
   if (Number(transaction.value) == 0) return false;
   if (
@@ -40,7 +43,7 @@ const decodeTransaction = async (transaction: Transaction) => {
     transaction,
     amountIn: transaction.value,
     minAmountOut: decoded.minAmountOut,
-    tokenToCapture: decoded.path[1],
+    token: decoded.path[1],
   };
 };
 

@@ -4,7 +4,7 @@ type DecodedTransactionProps = {
   transaction: Transaction;
   amountIn: BigNumber;
   minAmountOut: BigNumber;
-  token: string;
+  targetToken: string;
 };
 
 export default DecodedTransactionProps;

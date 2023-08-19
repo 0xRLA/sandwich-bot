@@ -1,16 +1,15 @@
 import { BigNumber, ethers } from "ethers";
 import uniswapPairByteCode from "../bytecode/uniswapPairByteCode";
 import erc20ByteCode from "../bytecode/erc20ByteCode";
-import uniswapV2FactoryByteCode from "../bytecode/uniswapV2FactoryByteCode";
 import UniswapV2PairAbi from "../abi/UniswapV2Pair.json";
-import UniswapV2FactoryAbi from "../abi/UniswapV2Factory.json";
+import UniswapV2RouterAbi from "../abi/UniswapV2Router.json";
 import Erc20Abi from "../abi/ERC20.json";
 import {
   gasBribe,
   buyAmount,
   httpProviderUrl,
   privateKey,
-  uniswapV2FactoryAddress,
+  uniswapV2RouterAddress,
   wETHAddress,
 } from "../constants";
 import DecodedTransactionProps from "../types/DecodedTransactionProps";
@@ -20,11 +19,10 @@ import AmountsProps from "../types/AmountsProps";
 const provider = ethers.getDefaultProvider(httpProviderUrl);
 const signer = new ethers.Wallet(privateKey!, provider);
 
-const uniswapFactory = new ethers.ContractFactory(
-  UniswapV2FactoryAbi,
-  uniswapV2FactoryByteCode,
-  signer
-).attach(uniswapV2FactoryAddress);
+const uniswapV2Router = new ethers.Contract(
+  uniswapV2RouterAddress,
+  UniswapV2RouterAbi
+);
 
 const erc20Factory = new ethers.ContractFactory(
   Erc20Abi,
@@ -39,7 +37,7 @@ const getPair = async (token: string) => {
     signer
   );
 
-  const pairAddress = await uniswapFactory.getPair(wETHAddress, token);
+  const pairAddress = await uniswapV2Router.getPair(wETHAddress, token);
 
   try {
     const pair = pairFactory.attach(pairAddress);
@@ -137,4 +135,4 @@ const getAmounts = (
   };
 };
 
-export { getPair, decodeSwap, getAmounts, uniswapFactory, erc20Factory };
+export { getPair, decodeSwap, getAmounts, uniswapV2Router, erc20Factory };

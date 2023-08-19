@@ -20,7 +20,7 @@ const uniswapUniversalRouterAddress = isMainnet
   ? "0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B"
   : "0x4648a43B2C14Da09FdF82B161150d3F634f40491";
 
-const uniswapV2Router = isMainnet
+const uniswapV2RouterAddress = isMainnet
   ? "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
   : "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 
@@ -44,7 +44,7 @@ export {
   uniswapUniversalRouterAddress,
   wETHAddress,
   uniswapV2FactoryAddress,
-  uniswapV2Router,
+  uniswapV2RouterAddress,
   gasBribe,
   buyAmount,
 };

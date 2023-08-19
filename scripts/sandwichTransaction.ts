@@ -4,14 +4,13 @@ import {
   FlashbotsBundleResolution,
 } from "@flashbots/ethers-provider-bundle";
 import DecodedTransactionProps from "../types/DecodedTransactionProps";
-import { uniswapFactory, getAmounts, getPair, erc20Factory } from "./utils";
+import { uniswapV2Router, getAmounts, getPair, erc20Factory } from "./utils";
 import {
   chainId,
   httpProviderUrl,
   privateKey,
   wETHAddress,
   buyAmount,
-  uniswapV2Router,
 } from "../constants";
 import AmountsProps from "../types/AmountsProps";
 
@@ -23,6 +22,7 @@ const sandwichTransaction = async (
   decoded: DecodedTransactionProps | undefined
 ): Promise<boolean> => {
   if (!decoded) return false;
+  console.log(decoded.targetToken);
   const pairs = await getPair(decoded.targetToken);
   if (!pairs) return false;
   const amounts = getAmounts(decoded, pairs);
@@ -35,6 +35,8 @@ const sandwichTransaction = async (
 
   // 1. Swap ETH for tokens
   const t1 = await firstTransaction(decoded, amounts);
+
+  console.log(t1);
 
   // 2. Wrap target transacton
   const t2 = secondTransaction(decoded.transaction);
@@ -51,7 +53,7 @@ const sandwichTransaction = async (
   // Finally try to get sandwich transaction included in block
   const result = await sendBundle(bundle, flashbotsProvider);
 
-  if (result) console.log(bundle);
+  if (result) console.log("bundle: ", bundle);
 
   return result ?? false;
 };
@@ -60,21 +62,24 @@ const firstTransaction = async (
   decoded: DecodedTransactionProps,
   amounts: AmountsProps
 ) => {
+  console.log(amounts);
+  const transaction = await uniswapV2Router.swapExactETHForTokens(
+    amounts.firstAmountOut,
+    [wETHAddress, decoded.targetToken],
+    signer.address,
+    deadline,
+    {
+      value: buyAmount,
+      type: 2,
+      maxFeePerGas: amounts.maxGasFee,
+      maxPriorityFeePerGas: amounts.priorityFee,
+      gasLimit: 300000,
+    }
+  );
+
   let firstTransaction = {
     signer: signer,
-    transaction: await uniswapFactory.populateTransaction.swapExactETHForTokens(
-      amounts.firstAmountOut,
-      [wETHAddress, decoded.targetToken],
-      signer.address,
-      deadline,
-      {
-        value: buyAmount,
-        type: 2,
-        maxFeePerGas: amounts.maxGasFee,
-        maxPriorityFeePerGas: amounts.priorityFee,
-        gasLimit: 300000,
-      }
-    ),
+    transaction: transaction,
   };
 
   firstTransaction.transaction = {
@@ -142,7 +147,7 @@ const forthTransaction = async (
 ) => {
   let fourthTransaction = {
     signer: signer,
-    transaction: await uniswapFactory.populateTransaction.swapExactTokensForETH(
+    transaction: await uniswapV2Router.swapExactTokensForETH(
       amounts.firstAmountOut,
       amounts.thirdAmountOut,
       [decoded.targetToken, wETHAddress],
@@ -201,11 +206,7 @@ const sendBundle = async (
     .then(async (waitResponse: any) => {
       console.log("Wait response", FlashbotsBundleResolution[waitResponse]);
       if (waitResponse == FlashbotsBundleResolution.BundleIncluded) {
-        console.log("-------------------------------------------");
-        console.log("-------------------------------------------");
-        console.log("----------- Bundle Included ---------------");
-        console.log("-------------------------------------------");
-        console.log("-------------------------------------------");
+        console.log("Bundle Included!");
         return true;
       } else if (
         waitResponse == FlashbotsBundleResolution.AccountNonceTooHigh

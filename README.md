@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <img src="https://cdn.discordapp.com/attachments/1057976249756176414/1142442210344841257/0xrla_cute_and_evil_bot_avatar_with_neon_and_crypto_colors_png__1aadaf7d-4d07-431e-b6a1-49b89826186c.png" alt="Sandwich BOT" width="200">
+  <img src="https://cdn.discordapp.com/attachments/1057976249756176414/1143799272098242577/0xrla_cartoon_cute_evil_robot_eating_a_subway_sandwich_with_dol_0c3ed251-eaf7-4fbc-9026-ad6c6f186dde.png" alt="Sandwich BOT" width="400">
   <br>
   Sandwich BOT
   <br>
